@@ -1,12 +1,15 @@
 {
-  "name": "db-nosql",
+  "name": "seed-mongoose",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ."
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "mongoose": "^6.9.2"
+  }
 }
