@@ -1,37 +1,23 @@
 require("./db");
-const seed = require("./seed");
-const { Dog, Owner } = require("./models");
+
+const {
+  cleanCollections,
+  saveDocuments,
+  updateDogs,
+  updateOwners,
+  cleanPrivateFields,
+} = require("./db-functions");
 
 const main = async () => {
-  console.log("<<<Guardando los documentos>>>");
-  const dogs = await Dog.insertMany(seed.dogs);
-  const owners = await Owner.insertMany(seed.owners);
-  console.log("<<<Documentos guardados>>>");
+  await cleanCollections();
 
-  console.log("Actualizando Dogs con su Owner");
+  const { dogs, owners } = await saveDocuments();
 
-  await Promise.all(
-    dogs.map(async (dog) => {
-      const owner = owners.find((owner) => owner._ownerId === dog._owner);
+  await updateDogs(dogs, owners);
 
-      await dog.updateOne({ owner: owner._id });
-    })
-  );
+  await updateOwners(dogs, owners);
 
-  console.log("Dogs actualizados con su Owner");
-
-  console.log("Actualizando Owner con sus Dogs");
-
-  await Promise.all(
-    owners.map(async (owner) => {
-      const dbDogs = owner._dogs.map((dogId) => {
-        const relatedDog = dogs.find((dog) => dog._petId === dogId);
-        return relatedDog._id;
-      });
-      await owner.updateOne({ dogs: dbDogs });
-    })
-  );
-  console.log("Owner actualizado con sus Dogs");
+  await cleanPrivateFields();
 };
 
 main()

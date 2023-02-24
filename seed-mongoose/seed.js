@@ -33,7 +33,7 @@ const seed = {
   owners: [
     {
       name: "Pepe",
-      surname: "Gomez",
+      surname: "Soro",
       _ownerId: 1,
       _dogs: [1, 4],
     },
